@@ -27,7 +27,7 @@ Use this tracker to monitor progress, ownership, and release readiness.
 | ID | Task | Owner | Priority | Status | Start | Due | Notes |
 |---|---|---|---|---|---|---|---|
 | B1 | Initialize frontend app structure | Frontend | P0 | Done | 2026-11-08 | 2026-11-08 | Vite React TS scaffold created in frontend/ |
-| B2 | Initialize backend modules | Backend | P0 | Not Started |  |  | NestJS modular monolith |
+| B2 | Initialize backend modules | Backend | P0 | In Progress | 2026-11-10 |  | Frontend runtime data-mode adapter (`local` vs `api-stub`) added to decouple UI hooks from persistence implementation ahead of NestJS module hookup |
 | B3 | Setup PostgreSQL schema baseline | Backend | P0 | Not Started |  |  | Core entities first |
 | B4 | Setup S3 buckets and access policy | DevOps | P1 | Not Started |  |  | Media/docs separation |
 | B5 | Setup auth + RBAC | Backend | P0 | Not Started |  |  | Admin roles required |
@@ -36,14 +36,14 @@ Use this tracker to monitor progress, ownership, and release readiness.
 | ID | Task | Owner | Priority | Status | Start | Due | Notes |
 |---|---|---|---|---|---|---|---|
 | C1 | Build Home page | Frontend | P0 | In Progress | 2026-11-08 |  | Home page now includes reference-style featured property cards (status badge, quick action icon, pricing detail row, feature tags, dual CTAs) with final spacing/typography pass and premium visual calibration |
-| C2 | Build Listings search + filters | Frontend | P0 | In Progress | 2026-11-08 |  | Added real filter workflow plus pagination and larger listing dataset; URL now persists type/location/budget/query/sort/page |
-| C8 | Polish global footer | Frontend | P1 | In Progress | 2026-11-08 |  | Redesigned to high-contrast premium footer with structured columns, trust tags, quick links, and legal bottom band |
+| C2 | Build Listings search + filters | Frontend | P0 | In Progress | 2026-11-08 |  | Added real filter workflow plus pagination and larger listing dataset; URL persists type/location/budget/query/sort/page/saved; saved-only mode and dedicated /saved shortlist page now support full shortlist browsing; saved/compare persistence now runs through typed storage service adapters for backend-ready swappability |
+| C8 | Polish global footer | Frontend | P1 | In Progress | 2026-11-08 |  | Redesigned to high-contrast premium footer with structured columns, trust tags, quick links, and legal bottom band; spacing pass completed to reduce oversized height and remove short-page visual gap near footer |
 | C9 | Cross-device responsive hardening | Frontend | P0 | In Progress | 2026-11-08 |  | Added wide/desktop/tablet/mobile breakpoints with recalibrated grids, spacing, actions, and typography across Home/Properties/Footer |
-| C3 | Build Property Details page | Frontend | P0 | In Progress | 2026-11-08 |  | Premium trust treatment retained with key facts and visual polish |
-| C4 | Build Services/About/Locations/Contact | Frontend | P1 | In Progress | 2026-11-08 |  | Full reference-style redesign pass applied across all content pages |
+| C3 | Build Property Details page | Frontend | P0 | In Progress | 2026-11-08 |  | Premium trust treatment retained with key facts and visual polish; detail CTA now supports save/unsave, compare, prefilled WhatsApp enquiry context, and free OpenStreetMap location toggle driven by stored property coordinates |
+| C4 | Build Services/About/Locations/Contact | Frontend | P1 | In Progress | 2026-11-08 |  | Full reference-style redesign pass applied; Contact now includes premium consultation layout, large "Locate Us" office map section, sticky desktop enquiry form, inline field-level validation hints, and local enquiry queue support |
 | C5 | Integrate WhatsApp property enquiry CTA | Frontend/Backend | P0 | In Progress | 2026-11-08 |  | Homepage featured cards now include WhatsApp deep-link CTA with prefilled enquiry text; backend lead capture integration pending |
 | C6 | Build site visit booking flow | Frontend/Backend | P0 | Not Started |  |  | Slot booking + confirmation |
-| C7 | Build property comparison | Frontend | P1 | Not Started |  |  | Up to 3 properties compare |
+| C7 | Build property comparison | Frontend | P1 | In Progress | 2026-11-10 |  | Compare workflow v1 live: persistent max-3 compare selection, /compare route, side-by-side comparison cards, remove/clear actions, global sticky compare tray, shareable compare URL, and best value/space highlights; fixed clear/hydration regressions and added direct compare actions on listing cards for clearer UX |
 
 ### Phase D: Admin Portal
 | ID | Task | Owner | Priority | Status | Start | Due | Notes |
@@ -52,7 +52,7 @@ Use this tracker to monitor progress, ownership, and release readiness.
 | D2 | Property CRUD + publish workflow | Frontend/Backend | P0 | In Progress | 2026-11-08 |  | Admin properties management UI shell implemented |
 | D3 | Media upload and gallery manager | Frontend/Backend | P0 | In Progress | 2026-11-08 |  | Admin media manager UI v1 implemented |
 | D4 | Document vault with categories | Frontend/Backend | P0 | In Progress | 2026-11-08 |  | Admin document vault UI v1 implemented |
-| D5 | Lead management pipeline | Frontend/Backend | P0 | In Progress | 2026-11-08 |  | Leads table and stage visibility UI implemented |
+| D5 | Lead management pipeline | Frontend/Backend | P0 | In Progress | 2026-11-08 |  | Leads table and stage visibility UI implemented; contact-page web enquiries now flow into admin leads queue (local storage prototype) with editable stage/owner controls, stage filters, CSV export, and in-page lead detail drawer for ops review including lead source context and submitted timestamp |
 | D6 | Site visit scheduler and tracker | Frontend/Backend | P0 | In Progress | 2026-11-08 |  | Site visits screen and schedule workflow shell implemented |
 | D7 | Customer and team management | Frontend/Backend | P1 | In Progress | 2026-11-08 |  | Team and permissions screen implemented |
 | D8 | Reports module | Frontend/Backend | P1 | Not Started |  |  | Funnel/source/conversion |
@@ -78,4 +78,4 @@ Use this tracker to monitor progress, ownership, and release readiness.
 ### Weekly Progress Summary
 | Week | Completed | In Progress | Blockers | Next Focus |
 |---|---|---|---|---|
-| Week 1 | Scope lock, IA finalized, wireframes v1, hi-fi spec v1, frontend scaffold, expanded admin modules, premium visual pass, reference-style theme alignment, all-page redesign pass | Public/admin UI refinement + stakeholder review | None | Connect forms and tables to backend API contracts |
+| Week 1 | Scope lock, IA finalized, wireframes v1, hi-fi spec v1, frontend scaffold, expanded admin modules, premium visual pass, reference-style theme alignment, all-page redesign pass, compare reliability fixes, contact+map redesign, and compact footer polish | Public/admin UI refinement + stakeholder review | None | Connect forms and tables to backend API contracts |

@@ -177,6 +177,23 @@ Phase 2 adds broker marketplace and commission automation.
 - Cross-device responsive hardening completed: explicit breakpoints for wide screens, tablets, and mobile with improved layout scaling, spacing rhythm, and component behavior consistency.
 - Catalog scalability pass completed: expanded mock inventory, introduced paginated listings, and persisted page state in URL alongside existing filters and sorting.
 - Featured property showcase aligned to latest reference pattern: richer card information architecture, quick action affordance, dual CTA row (View Details + WhatsApp), and final pixel-level spacing/typography/shadow calibration.
+- Functional continuity pass completed: featured/listing quick-save actions now persist via local storage, detail CTAs include contextual WhatsApp messages, and homepage "View Details" now routes directly to canonical property detail URLs.
+- Saved shortlist workflow introduced on Listings: users can toggle "Saved Only" mode, shareable URL retains saved filter state, and browsing now supports practical saved-first decision flow.
+- Dedicated shortlist surface launched at /saved with persistent saved cards, direct detail navigation, and contextual WhatsApp follow-up actions.
+- Comparison workflow v1 released: users can add up to three properties to compare, open /compare for side-by-side review, and manage compare state from Saved and Property Detail flows.
+- Property location experience upgraded without paid APIs: each listing now stores coordinates in the data model and Property Detail includes a right-panel "Show Map" option using embedded OpenStreetMap.
+- Compare flow upgraded with a global sticky Compare Tray: users can monitor selected items across pages, remove entries inline, clear tray, and jump to /compare in one click.
+- Compare decision support upgraded: /compare now supports shareable URL state and auto-highlights best value (lowest rate) and best space (largest area) among selected properties.
+- Lead capture prototype functional end-to-end on frontend: Contact page now validates and queues enquiries locally, and Admin Leads consumes queued web enquiries for immediate ops visibility before backend API integration.
+- Frontend persistence layer abstracted through typed storage services for saved, compare, and lead queue state so hooks can migrate to API-backed stores without page-level rewrites.
+- Admin Leads workflow upgraded to operations-ready behavior: stage filtering, editable stage/owner for web leads, and CSV export for visible pipeline records.
+- Runtime data-mode switch introduced (`VITE_DATA_MODE`) so persistence can run in local mode or API-stub mode without changing page components.
+- Admin Leads now includes an in-page lead details drawer for quick operational review (ID/source/stage/owner/phone/budget/timeline/next-step) and tighter archive behavior.
+- Compare reliability hardening completed: hydration and URL-sync race conditions fixed so add/remove/clear flows persist predictably across navigation.
+- Listings compare UX clarified: direct "Add to Compare" actions added on listing cards and spotlight panel, reducing confusion with saved-shortlist iconography.
+- Footer spacing refinement pass completed across pages: reduced visual bulk and removed short-page footer gap behavior.
+- Contact page redesigned to a professional conversion layout with stacked consultation + large "Locate Us" map section, sticky desktop form behavior, and inline field validation hints.
+- Admin lead drawer metadata improved with source context labels and submitted timestamp formatting for better operational triage.
 
 6. Next Steps in UI Track
 - Conduct stakeholder review using checklist and capture revision notes.
