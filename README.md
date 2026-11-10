@@ -63,6 +63,26 @@ VITE_DATA_MODE=api-stub
 
 If unset, the app defaults to `local` mode.
 
+## Deploy Frontend to GitHub Pages
+
+GitHub Pages deployment is configured via GitHub Actions:
+
+- Workflow file: `.github/workflows/deploy-frontend-pages.yml`
+- Trigger: push to `main` (or manual run)
+- Output: `frontend/dist`
+
+### One-time repository setup
+
+1. Open repository Settings -> Pages.
+2. Under Build and deployment, set Source to GitHub Actions.
+3. Push to `main`.
+
+After the workflow finishes, the site will be available at:
+
+`https://<your-github-username>.github.io/<repo-name>/`
+
+The workflow also publishes `404.html` as an SPA fallback, so React Router routes can be opened directly.
+
 ## Current Status
 
 The UI foundation, public pages, admin page shells, and premium card-driven layout are implemented and iteratively refined.
