@@ -5,6 +5,10 @@ export type Property = {
   title: string
   category: PropertyCategory
   locality: string
+  coordinates: {
+    lat: number
+    lng: number
+  }
   status: 'Ready to Move' | 'Under Construction' | 'New Launch'
   priceLabel: string
   pricePerSqft: string
@@ -19,6 +23,7 @@ export const properties: Property[] = [
     title: 'Lakeview Residences Phase II',
     category: 'Residential',
     locality: 'Sector 88, Gurgaon',
+    coordinates: { lat: 28.3872, lng: 76.9806 },
     status: 'Ready to Move',
     priceLabel: 'INR 1.45 Cr onwards',
     pricePerSqft: 'INR 12,850/sq ft',
@@ -32,6 +37,7 @@ export const properties: Property[] = [
     title: 'Maple Business Square',
     category: 'Commercial',
     locality: 'Golf Course Extension Road',
+    coordinates: { lat: 28.4276, lng: 77.1033 },
     status: 'Under Construction',
     priceLabel: 'INR 2.10 Cr onwards',
     pricePerSqft: 'INR 18,200/sq ft',
@@ -45,6 +51,7 @@ export const properties: Property[] = [
     title: 'Industrial Hub 42',
     category: 'Industrial',
     locality: 'IMT Manesar',
+    coordinates: { lat: 28.3511, lng: 76.9427 },
     status: 'New Launch',
     priceLabel: 'INR 3.60 Cr onwards',
     pricePerSqft: 'INR 7,300/sq ft',
@@ -58,6 +65,7 @@ export const properties: Property[] = [
     title: 'Greenfield Plots Collective',
     category: 'Plots/Land',
     locality: 'Sohna Road Extension',
+    coordinates: { lat: 28.3924, lng: 77.0407 },
     status: 'Ready to Move',
     priceLabel: 'INR 58 L onwards',
     pricePerSqft: 'INR 5,950/sq ft',
@@ -71,6 +79,7 @@ export const properties: Property[] = [
     title: 'Cedar Heights Residences',
     category: 'Residential',
     locality: 'Sector 150, Noida',
+    coordinates: { lat: 28.474, lng: 77.5208 },
     status: 'Under Construction',
     priceLabel: 'INR 1.18 Cr onwards',
     pricePerSqft: 'INR 9,950/sq ft',
@@ -84,6 +93,7 @@ export const properties: Property[] = [
     title: 'Axis Commerce Center',
     category: 'Commercial',
     locality: 'Sector 62, Noida',
+    coordinates: { lat: 28.6208, lng: 77.3656 },
     status: 'Ready to Move',
     priceLabel: 'INR 2.44 Cr onwards',
     pricePerSqft: 'INR 16,700/sq ft',
@@ -97,6 +107,7 @@ export const properties: Property[] = [
     title: 'Transpark Warehousing Estate',
     category: 'Industrial',
     locality: 'Greater Noida Logistics Belt',
+    coordinates: { lat: 28.4746, lng: 77.489 },
     status: 'Under Construction',
     priceLabel: 'INR 3.25 Cr onwards',
     pricePerSqft: 'INR 6,850/sq ft',
@@ -110,6 +121,7 @@ export const properties: Property[] = [
     title: 'Ridgeview Plot Enclave',
     category: 'Plots/Land',
     locality: 'Yamuna Expressway Corridor',
+    coordinates: { lat: 28.3519, lng: 77.5533 },
     status: 'New Launch',
     priceLabel: 'INR 72 L onwards',
     pricePerSqft: 'INR 6,420/sq ft',
@@ -123,6 +135,7 @@ export const properties: Property[] = [
     title: 'Willow Grove Towers',
     category: 'Residential',
     locality: 'Raj Nagar Extension, Ghaziabad',
+    coordinates: { lat: 28.6968, lng: 77.4538 },
     status: 'Ready to Move',
     priceLabel: 'INR 98 L onwards',
     pricePerSqft: 'INR 8,350/sq ft',
@@ -136,6 +149,7 @@ export const properties: Property[] = [
     title: 'Crescent Retail Boulevard',
     category: 'Commercial',
     locality: 'Sohna Road, Gurgaon',
+    coordinates: { lat: 28.4089, lng: 77.055 },
     status: 'New Launch',
     priceLabel: 'INR 1.85 Cr onwards',
     pricePerSqft: 'INR 19,400/sq ft',
@@ -149,6 +163,7 @@ export const properties: Property[] = [
     title: 'Prime Forge Industrial Park',
     category: 'Industrial',
     locality: 'Dharuhera Belt',
+    coordinates: { lat: 28.2057, lng: 76.7968 },
     status: 'Ready to Move',
     priceLabel: 'INR 4.10 Cr onwards',
     pricePerSqft: 'INR 7,650/sq ft',
@@ -162,6 +177,7 @@ export const properties: Property[] = [
     title: 'Horizon Land Parcels',
     category: 'Plots/Land',
     locality: 'New Gurgaon Extension',
+    coordinates: { lat: 28.4382, lng: 76.9987 },
     status: 'Under Construction',
     priceLabel: 'INR 1.12 Cr onwards',
     pricePerSqft: 'INR 7,150/sq ft',

@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { properties } from '../data/properties'
+import { useSavedProperties } from '../hooks/useSavedProperties'
 
 const categoryRail = [
   'Residential',
@@ -111,6 +112,7 @@ const testimonials = [
 
 export function HomePage() {
   const navigate = useNavigate()
+  const { isSaved, toggleSaved } = useSavedProperties()
   const heroImage =
     'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=80'
   const featuredListings = (() => {
@@ -218,14 +220,20 @@ export function HomePage() {
           <div className="featured-mini-grid">
             {featuredListings.map((property, index) => {
               const inquiryMessage = encodeURIComponent(`Hi, I am interested in ${property.title} (${property.id}). Please share details.`)
+              const saved = isSaved(property.id)
 
               return (
                 <article className="featured-mini-card" key={`${property.id}-${index}`}>
                   <div className="featured-mini-media">
                     <img src={property.image} alt={property.title} />
                     <span className="featured-badge">{property.status}</span>
-                    <button type="button" className="featured-quick-add" aria-label={`Save ${property.title}`}>
-                      +
+                    <button
+                      type="button"
+                      className={`featured-quick-add${saved ? ' active' : ''}`}
+                      aria-label={`${saved ? 'Remove' : 'Save'} ${property.title}`}
+                      onClick={() => toggleSaved(property.id)}
+                    >
+                      {saved ? '✓' : '+'}
                     </button>
                   </div>
 
@@ -248,7 +256,7 @@ export function HomePage() {
                     </div>
 
                     <div className="featured-mini-actions">
-                      <Link to={`/properties?query=${encodeURIComponent(property.title)}`} className="featured-action primary">
+                      <Link to={`/properties/${property.id}`} className="featured-action primary">
                         View Details
                       </Link>
                       <a

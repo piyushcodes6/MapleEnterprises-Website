@@ -1,7 +1,13 @@
 import { Link, useParams } from 'react-router-dom'
+import { useState } from 'react'
 import { properties } from '../data/properties'
+import { useCompareProperties } from '../hooks/useCompareProperties'
+import { useSavedProperties } from '../hooks/useSavedProperties'
 
 export function PropertyDetailPage() {
+  const [showMap, setShowMap] = useState(false)
+  const { isSaved, toggleSaved } = useSavedProperties()
+  const { canAddMore, isCompared, toggleCompared } = useCompareProperties()
   const { propertyId } = useParams()
   const property = properties.find((item) => item.id === propertyId)
 
@@ -16,6 +22,17 @@ export function PropertyDetailPage() {
       </section>
     )
   }
+
+  const inquiryMessage = encodeURIComponent(`Hi, I am interested in ${property.title} (${property.id}). Please share full details.`)
+  const saved = isSaved(property.id)
+  const compared = isCompared(property.id)
+  const compareDisabled = !compared && !canAddMore
+  const { lat, lng } = property.coordinates
+  const lngOffset = 0.02
+  const latOffset = 0.01
+  const mapEmbedUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${lng - lngOffset}%2C${lat - latOffset}%2C${lng + lngOffset}%2C${lat + latOffset}&layer=mapnik&marker=${lat}%2C${lng}`
+  const mapOpenUrl = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=14/${lat}/${lng}`
+  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`
 
   return (
     <section className="section">
@@ -77,13 +94,50 @@ export function PropertyDetailPage() {
         <aside className="cta-panel">
           <h3>Take the next step</h3>
           <p className="muted">Average consultant callback within 30 minutes.</p>
-          <a className="button accent" href="https://wa.me/919999999999" target="_blank" rel="noreferrer">
+          <a className="button accent" href={`https://wa.me/919999999999?text=${inquiryMessage}`} target="_blank" rel="noreferrer">
             Enquire on WhatsApp
           </a>
           <Link className="button" to="/contact">
             Schedule Site Visit
           </Link>
-          <button className="button secondary" type="button">Request Call Back</button>
+          <button className="button secondary" type="button" onClick={() => toggleSaved(property.id)}>
+            {saved ? 'Remove from Saved' : 'Save Property'}
+          </button>
+          <button className="button secondary" type="button" onClick={() => setShowMap((current) => !current)}>
+            {showMap ? 'Hide Map' : 'Show Map'}
+          </button>
+          <button
+            className={`button ghost compare-toggle${compared ? ' active' : ''}`}
+            type="button"
+            onClick={() => toggleCompared(property.id)}
+            disabled={compareDisabled}
+          >
+            {compared ? 'Remove from Compare' : compareDisabled ? 'Compare Limit Reached' : 'Add to Compare'}
+          </button>
+          <Link className="button secondary" to="/compare">
+            Open Compare
+          </Link>
+
+          {showMap ? (
+            <div className="property-map-panel">
+              <h4>Property Location</h4>
+              <p>{property.locality}</p>
+              <iframe
+                className="property-map-frame"
+                title={`${property.title} map`}
+                src={mapEmbedUrl}
+                loading="lazy"
+              />
+              <div className="property-map-links">
+                <a className="property-map-link" href={googleMapsUrl} target="_blank" rel="noreferrer">
+                  Open on Google Maps
+                </a>
+                <a className="property-map-link" href={mapOpenUrl} target="_blank" rel="noreferrer">
+                  Open on OpenStreetMap
+                </a>
+              </div>
+            </div>
+          ) : null}
         </aside>
       </div>
     </section>

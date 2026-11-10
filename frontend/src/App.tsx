@@ -10,10 +10,12 @@ import { AdminTeamPage } from './pages/admin/AdminTeamPage'
 import { AdminVisitsPage } from './pages/admin/AdminVisitsPage'
 import { AboutPage } from './pages/AboutPage'
 import { ContactPage } from './pages/ContactPage'
+import { ComparePropertiesPage } from './pages/ComparePropertiesPage'
 import { HomePage } from './pages/HomePage'
 import { LocationsPage } from './pages/LocationsPage'
 import { PropertiesPage } from './pages/PropertiesPage'
 import { PropertyDetailPage } from './pages/PropertyDetailPage'
+import { SavedPropertiesPage } from './pages/SavedPropertiesPage'
 import { ServicesPage } from './pages/ServicesPage'
 
 function App() {
@@ -23,6 +25,8 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/properties" element={<PropertiesPage />} />
         <Route path="/properties/:propertyId" element={<PropertyDetailPage />} />
+        <Route path="/saved" element={<SavedPropertiesPage />} />
+        <Route path="/compare" element={<ComparePropertiesPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/locations" element={<LocationsPage />} />

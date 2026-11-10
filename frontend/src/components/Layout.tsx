@@ -1,8 +1,10 @@
 import { NavLink, Outlet } from 'react-router-dom'
+import { CompareTray } from './CompareTray'
 
 const navItems = [
   { to: '/', label: 'Home' },
   { to: '/properties', label: 'Properties' },
+  { to: '/saved', label: 'Saved' },
   { to: '/services', label: 'Services' },
   { to: '/locations', label: 'Locations' },
   { to: '/about', label: 'About' },
@@ -53,6 +55,8 @@ export function Layout() {
         <Outlet />
       </main>
 
+      <CompareTray />
+
       <footer className="site-footer">
         <div className="container footer-shell">
           <div className="footer-grid">
@@ -71,6 +75,7 @@ export function Layout() {
               <ul className="footer-links">
                 <li><NavLink to="/">Home</NavLink></li>
                 <li><NavLink to="/properties">Properties</NavLink></li>
+                <li><NavLink to="/saved">Saved</NavLink></li>
                 <li><NavLink to="/services">Services</NavLink></li>
                 <li><NavLink to="/locations">Locations</NavLink></li>
               </ul>

@@ -1,8 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { properties } from '../data/properties'
+import { useCompareProperties } from '../hooks/useCompareProperties'
+import { useSavedProperties } from '../hooks/useSavedProperties'
 
 export function PropertiesPage() {
+  const { isSaved, savedCount, savedIds, toggleSaved } = useSavedProperties()
+  const { canAddMore, compareCount, isCompared, maxCompare, toggleCompared } = useCompareProperties()
   const [searchParams, setSearchParams] = useSearchParams()
   const categories = ['All', 'Residential', 'Commercial', 'Plots/Land', 'Industrial'] as const
   const budgetOptions = ['Any', '50L - 1Cr', '1Cr - 2Cr', '2Cr+'] as const
@@ -34,6 +38,7 @@ export function PropertiesPage() {
   const [location, setLocation] = useState<(typeof locationOptions)[number]>(() =>
     getSafeValue(searchParams.get('location'), locationOptions, 'All'),
   )
+  const [showSavedOnly, setShowSavedOnly] = useState(() => searchParams.get('saved') === '1')
   const [currentPage, setCurrentPage] = useState(() => {
     const raw = Number(searchParams.get('page') ?? '1')
     return Number.isFinite(raw) && raw > 0 ? Math.floor(raw) : 1
@@ -76,6 +81,7 @@ export function PropertiesPage() {
   }
 
   const filtered = useMemo(() => {
+    const savedSet = new Set(savedIds)
     const term = query.trim().toLowerCase()
 
     const matchesLocation = (value: string) => {
@@ -88,6 +94,10 @@ export function PropertiesPage() {
 
     if (category === 'All') {
       return properties.filter((property) => {
+        if (showSavedOnly && !savedSet.has(property.id)) {
+          return false
+        }
+
         if (!matchesBudget(property.priceLabel)) {
           return false
         }
@@ -103,6 +113,10 @@ export function PropertiesPage() {
     }
 
     return properties.filter((property) => {
+      if (showSavedOnly && !savedSet.has(property.id)) {
+        return false
+      }
+
       const inCategory = property.category === category
       if (!inCategory) {
         return false
@@ -124,7 +138,7 @@ export function PropertiesPage() {
 
       return searchText.toLowerCase().includes(term)
     })
-  }, [budget, category, location, query])
+  }, [budget, category, location, query, savedIds, showSavedOnly])
 
   const visible = useMemo(() => {
     if (sortBy === 'featured') {
@@ -165,7 +179,7 @@ export function PropertiesPage() {
     }
 
     setCurrentPage(1)
-  }, [budget, category, location, query, sortBy])
+  }, [budget, category, location, query, showSavedOnly, sortBy])
 
   useEffect(() => {
     const params = new URLSearchParams()
@@ -190,12 +204,16 @@ export function PropertiesPage() {
       params.set('sort', sortBy)
     }
 
+    if (showSavedOnly) {
+      params.set('saved', '1')
+    }
+
     if (currentPage > 1) {
       params.set('page', String(currentPage))
     }
 
     setSearchParams(params, { replace: true })
-  }, [budget, category, currentPage, location, query, setSearchParams, sortBy])
+  }, [budget, category, currentPage, location, query, setSearchParams, showSavedOnly, sortBy])
 
   const resetFilters = () => {
     setCategory('All')
@@ -203,6 +221,7 @@ export function PropertiesPage() {
     setBudget('Any')
     setQuery('')
     setSortBy('featured')
+    setShowSavedOnly(false)
     setCurrentPage(1)
   }
 
@@ -331,13 +350,30 @@ export function PropertiesPage() {
           <div className="catalog-content">
             <div className="property-meta-bar">
               <p>{visible.length} properties curated for your search</p>
-              <span className="property-meta-chip">Updated today</span>
+              <div className="property-meta-right">
+                <span className="property-meta-chip">Updated today</span>
+                <button
+                  type="button"
+                  className={`property-meta-chip property-meta-toggle${showSavedOnly ? ' active' : ''}`}
+                  onClick={() => setShowSavedOnly((current) => !current)}
+                >
+                  Saved Only
+                </button>
+                <span className="property-meta-chip saved">Saved: {savedCount}</span>
+                <span className="property-meta-chip saved">Compare: {compareCount}/{maxCompare}</span>
+              </div>
             </div>
 
             {spotlight ? (
               <article className="spotlight-card">
                 <img src={spotlight.image} alt={spotlight.title} className="spotlight-image" />
                 <div className="spotlight-body">
+                  {(() => {
+                    const compared = isCompared(spotlight.id)
+                    const compareDisabled = !compared && !canAddMore
+
+                    return (
+                      <>
                   <span className="spotlight-label">Spotlight Listing</span>
                   <h2>{spotlight.title}</h2>
                   <p>{spotlight.locality} | {spotlight.status}</p>
@@ -352,22 +388,52 @@ export function PropertiesPage() {
                     <Link className="button" to={`/properties/${spotlight.id}`}>
                       View Spotlight
                     </Link>
-                    <a className="button secondary" href="https://wa.me/919999999999" target="_blank" rel="noreferrer">
+                    <a
+                      className="button secondary"
+                      href={`https://wa.me/919999999999?text=${encodeURIComponent(`Hi, I am interested in ${spotlight.title} (${spotlight.id}). Please share details.`)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       Chat on WhatsApp
                     </a>
                   </div>
+                  <button
+                    type="button"
+                    className={`button ghost compare-toggle${compared ? ' active' : ''}`}
+                    onClick={() => toggleCompared(spotlight.id)}
+                    disabled={compareDisabled}
+                  >
+                    {compared ? 'Remove from Compare' : compareDisabled ? 'Compare Limit Reached' : 'Add to Compare'}
+                  </button>
+                      </>
+                    )
+                  })()}
                 </div>
               </article>
             ) : null}
 
             {collection.length > 0 ? (
               <div className="property-showcase-grid">
-                {collection.map((property) => (
-                  <article key={property.id} className="showcase-card">
+                {collection.map((property) => {
+                  const saved = isSaved(property.id)
+                  const compared = isCompared(property.id)
+                  const compareDisabled = !compared && !canAddMore
+                  const inquiryMessage = encodeURIComponent(`Hi, I am interested in ${property.title} (${property.id}). Please share details.`)
+
+                  return (
+                    <article key={property.id} className="showcase-card">
                     <div className="showcase-media">
                       <img src={property.image} alt={property.title} className="showcase-image" />
                       <span className="showcase-status">{property.status}</span>
-                      <button type="button" className="showcase-fav" aria-label="Save property">+</button>
+                      <button
+                        type="button"
+                        className={`showcase-fav${saved ? ' active' : ''}`}
+                        aria-label={`${saved ? 'Remove saved' : 'Save'} property`}
+                        title={saved ? 'Remove from Saved' : 'Save to Shortlist'}
+                        onClick={() => toggleSaved(property.id)}
+                      >
+                        {saved ? '✓' : '+'}
+                      </button>
                     </div>
                     <div className="showcase-body">
                       <div className="showcase-top-meta">
@@ -387,13 +453,22 @@ export function PropertiesPage() {
                         <Link className="button" to={`/properties/${property.id}`}>
                           View Details
                         </Link>
-                        <a className="button secondary" href="https://wa.me/919999999999" target="_blank" rel="noreferrer">
+                        <a className="button secondary" href={`https://wa.me/919999999999?text=${inquiryMessage}`} target="_blank" rel="noreferrer">
                           WhatsApp
                         </a>
                       </div>
+                      <button
+                        type="button"
+                        className={`button ghost compare-toggle${compared ? ' active' : ''}`}
+                        onClick={() => toggleCompared(property.id)}
+                        disabled={compareDisabled}
+                      >
+                        {compared ? 'Remove from Compare' : compareDisabled ? 'Compare Limit Reached' : 'Add to Compare'}
+                      </button>
                     </div>
-                  </article>
-                ))}
+                    </article>
+                  )
+                })}
               </div>
             ) : (
               <div className="property-empty">No properties found in this category.</div>
